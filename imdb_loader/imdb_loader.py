@@ -49,7 +49,7 @@ def main():
             continue
         finally:
             #print("finally")
-            movies.to_csv(movie_db_path)
+            movies.to_csv(movie_db_path, index=False)
     return 0
 
 
