@@ -29,7 +29,9 @@
              {% for movie in movies_list %}
               <div class="col">
                 <div class="card shadow-sm">
-                    <img src = "{{ movie.image }}"  class="card-img-top" alt="{{ movie.title }}">
+                    <a href="/movie?id={{ movie.imdb_id }}">
+                        <img src = "{{ movie.image }}"  class="card-img-top" alt="{{ movie.title }}">
+                    </a>
                   <div class="card-body">
                     <h5 class="card-title">{{ movie.title }}</h5>
                     <p class="card-text">{{ movie.summary[:200] + " ..." }}</p>
@@ -70,11 +72,11 @@
     </div>
     <hr/>
 
-    <script>
-        function openPoster(imageUrl) {
-            window.open(imageUrl, 'Movie Poster', 'width=500,height=700');
-        }
-    </script>
+<!--    <script>-->
+<!--        function openPoster(imageUrl) {-->
+<!--            window.open(imageUrl, 'Movie Poster', 'width=500,height=700');-->
+<!--        }-->
+<!--    </script>-->
     <p></p>
     <p></p>
     <p></p>
