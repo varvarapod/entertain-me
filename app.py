@@ -1,5 +1,5 @@
 import os
-
+import ast
 import pandas as pd
 from flask import (Flask, redirect, render_template, request, session,
                    send_from_directory, url_for)
@@ -11,11 +11,14 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 movie_db_path = 'data/imdb_mini.csv'
 df = pd.read_csv(movie_db_path)
+df.drop_duplicates(subset=['imdb_id'], inplace=True)
+
 
 @app.route('/')
 def index():
     print('Request for index page received')
     return render_template('index.html')
+
 
 @app.route('/movie', methods=['GET', 'POST'])
 def movie():
@@ -28,20 +31,44 @@ def movie():
         return redirect(url_for('index'))
 
     df_movie = df[df['imdb_id'] == int(id)].iloc[:1]
+
     if not df_movie.empty:
         movies_list = []
         for index, row in df_movie.iterrows():
             movies_list.append({
                 'imdb_id': row['imdb_id'],
+                'year': int(row['year']),
                 'title': row['title'],
                 'rating': row['rating'],
                 'image': row.get('poster_url'),
                 'summary': row.get('plot'),
+                'recommendations': row.get('recommendations'),
             })
         movie = movies_list[0]
-        return render_template('movie.html', movie=movie)
+
+        # get suggestions ids from recommendations and receive suggestion movies df
+        suggestions_ids = list(map(int, ast.literal_eval(movie['recommendations'])))
+        #suggestions_ids =[23938]
+        mask = df['imdb_id'].isin(suggestions_ids)
+        suggestions_df = df[mask]
+
+        # get suggestions list
+        suggestions = []
+        for index, row in suggestions_df.iterrows():
+            suggestions.append({
+                'imdb_id': row['imdb_id'],
+                'year': int(row['year']),
+                'title': row['title'],
+                'rating': row['rating'],
+                'image': row.get('poster_url'),
+                'summary': row.get('plot'),
+                'recommendations': row.get('recommendations'),
+            })
+
+        return render_template('movie.html', movie=movie, suggestions=suggestions)
     else:
         return render_template('index.html')
+
 
 @app.route('/favicon.ico')
 def favicon():
@@ -49,7 +76,7 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
-@app.route('/hello', methods=['POST'])
+@app.route('/hello', methods=['GET, POST'])
 def hello():
     name = request.form.get('name')
 
@@ -59,6 +86,11 @@ def hello():
     else:
         print('Request for hello page received with no name or blank name -- redirecting')
         return redirect(url_for('index'))
+
+
+@app.route('/test', methods=['GET'])
+def test():
+    return render_template('test.html')
 
 
 # Route for receiving user preferences and providing movie suggestions

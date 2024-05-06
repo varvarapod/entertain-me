@@ -9,18 +9,37 @@
     
 <main>
   <div class="container col-xxl-8 px-4 py-5">
-    <a href="/movielist?page={{ session['page'] }}">BACK</a>
+    <a href="/">Home </a>
+      >
+    <a href="/movielist?page={{ session['page'] }}"> Search results</a>
     <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
       <div class="col-10 col-sm-8 col-lg-6">
         <img src="{{ movie.image }}" class="d-block mx-lg-auto img-fluid" alt="{{ movie.title }}" width="700" height="500" loading="lazy">
       </div>
       <div class="col-lg-6">
         <h1 class="display-5 fw-bold lh-1 mb-3">{{ movie.title }}</h1>
+        <p><b><small class="text-muted">Year: {{ movie.year }}</small></b></p>
+        <p><b><small class="text-muted">Rating:{{ movie.rating }}/10</small></b></p>
         <p class="lead">{{ movie.summary }}</p>
 <!--        <div class="d-grid gap-2 d-md-flex justify-content-md-start">-->
-<!--          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Основная</button>-->
-<!--          <button type="button" class="btn btn-outline-secondary btn-lg px-4">По умолчанию</button>-->
+
 <!--        </div>-->
+      </div>
+    </div>
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="card-group">
+        {% for film in suggestions %}
+        <div class="card">
+          <a href="/movie?id={{ film.imdb_id }}">
+            <img src="{{ film.image }}" class="card-img-top" alt="...">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">{{ film.title }}</h5>
+            <p class="card-text"><small class="text-muted">Year: {{ film.year }}</small></p>
+            <p class="card-text"><small class="text-muted">Rating:{{ film.rating }}/10</small></p>
+          </div>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </div>
