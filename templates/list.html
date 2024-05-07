@@ -1,6 +1,6 @@
 <!doctype html>
 <head>
-    <title>Hello Azure - Python Quickstart</title>
+    <title>Entertain.me</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
@@ -14,14 +14,11 @@
               </a>
 
               <ul class="nav nav-pills">
-                <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
               </ul>
         </header>
         <div class="px-4 py-3 my-2 text-center">
-        <h1>Movies found</h1>
+            <h3>Movies found</h3>
 
         <div class="album py-5 bg-body-tertiary">
           <div class="container">
@@ -37,8 +34,9 @@
                     <p class="card-text">{{ movie.summary[:200] + " ..." }}</p>
                     <div class="d-grid gap-0 d-md-flex justify-content-md-center">
                           <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-primary">Read more</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary">Find similar</button>
+                            <form action="/movie?id={{ movie.imdb_id }}" method="GET">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Read more</button>
+                            </form>
                           </div>
                     </div>
 
@@ -50,7 +48,7 @@
             </div>
           </div>
         </div>
-    <hr/>
+
     <div  class="pagination d-grid gap-2 d-md-flex justify-content-md-center">
         {% if page > 1 %}
             <form action="/movielist" method="GET">
@@ -60,7 +58,11 @@
 
         {% for num in range(num_pages) %}
             <form action="/movielist" method="GET">
-                <button type="submit" class="btn btn-outline-primary btn-sm" name="page" value="{{ num +1 }}">{{ num + 1 }}</button>
+                {% if page == num + 1 %}
+                    <button type="submit" class="page-item active btn btn-outline-primary btn-sm" name="page" value="{{ num +1 }}">{{ num + 1 }}</button>
+                {% else %}
+                    <button type="submit" class="btn btn-outline-primary btn-sm" name="page" value="{{ num +1 }}">{{ num + 1 }}</button>
+                {% endif %}
             </form>
         {% endfor %}
 
@@ -70,13 +72,7 @@
             </form>
         {% endif %}
     </div>
-    <hr/>
 
-<!--    <script>-->
-<!--        function openPoster(imageUrl) {-->
-<!--            window.open(imageUrl, 'Movie Poster', 'width=500,height=700');-->
-<!--        }-->
-<!--    </script>-->
     <p></p>
     <p></p>
     <p></p>
@@ -87,7 +83,7 @@
           <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
             <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
           </a>
-          <span class="mb-3 mb-md-0 text-body-secondary">© 2024 Company, Inc</span>
+          <span class="mb-3 mb-md-0 text-body-secondary">© 2024 Entertain.me, Inc</span>
         </div>
 
         <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

@@ -76,21 +76,11 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
-@app.route('/hello', methods=['GET, POST'])
-def hello():
-    name = request.form.get('name')
-
-    if name:
-        print('Request for hello page received with name=%s' % name)
-        return render_template('hello.html', name=name)
-    else:
-        print('Request for hello page received with no name or blank name -- redirecting')
-        return redirect(url_for('index'))
 
 
-@app.route('/test', methods=['GET'])
+@app.route('/about', methods=['GET'])
 def test():
-    return render_template('test.html')
+    return render_template('about.html')
 
 
 # Route for receiving user preferences and providing movie suggestions
@@ -102,7 +92,7 @@ def movielist():
     name = request.form.get('name')
     page = int(request.args.get('page', 1))
     session['page'] = page
-    per_page = 3
+    per_page = 6
 
     if name:
         name = name.lower()

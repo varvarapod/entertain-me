@@ -10,13 +10,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\data\imdb_mini_rec.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
       </map>
     </option>
   </component>
